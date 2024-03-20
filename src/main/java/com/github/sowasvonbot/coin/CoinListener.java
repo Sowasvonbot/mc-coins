@@ -1,12 +1,15 @@
 package com.github.sowasvonbot.coin;
 
 import com.github.sowasvonbot.util.ConfigHolder;
+import java.util.Objects;
 import org.bukkit.Material;
 import org.bukkit.block.Furnace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
 /**
@@ -71,5 +74,24 @@ public class CoinListener implements Listener {
       return;
     }
     event.setCancelled(!Coin.isCoin(furnace.getInventory().getSmelting()));
+  }
+
+  /**
+   * Prevents a head coin from being placed in the world.
+   *
+   * @param event {@link PlayerInteractEvent}, to be cancelled if the item is a head coin.
+   */
+  @EventHandler
+  public void preventHeadCoinFromBeingPlaced(PlayerInteractEvent event) {
+    if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+      return;
+    }
+    if (!event.hasItem()) {
+      return;
+    }
+    if (Objects.requireNonNull(event.getItem()).getType() != Material.PLAYER_HEAD) {
+      return;
+    }
+    event.setCancelled(Coin.isCoin(event.getItem()));
   }
 }

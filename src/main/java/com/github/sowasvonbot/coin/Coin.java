@@ -125,7 +125,7 @@ public class Coin {
     SkullMeta skullMeta = (SkullMeta) headItemstack.getItemMeta();
 
     GameProfile gameProfile = new GameProfile(UUID.fromString(ConfigHolder.getInstance()
-        .getValue(ConfigHolder.ConfigField.COIN_HEAD_PLAYER_UUID, String.class)), null);
+        .getValue(ConfigHolder.ConfigField.COIN_HEAD_PLAYER_UUID, String.class)), "");
     gameProfile.getProperties().put("textures", new Property("textures", ConfigHolder.getInstance()
         .getValue(ConfigHolder.ConfigField.COIN_HEAD_VALUE, String.class)));
 
@@ -139,6 +139,7 @@ public class Coin {
           () -> "Could not load head file, using default head as coin. "
               + "If this problem is not fixable, please set use_head = false");
     }
+    headItemstack.setItemMeta(skullMeta);
     return headItemstack;
   }
 }
