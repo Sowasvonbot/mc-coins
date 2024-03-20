@@ -6,7 +6,7 @@ coin:
   use_head: false # If true, heads are used instead of standard items
 
   # Only needed if use_head is false
-  coin_item_material: POISONOUS_POTATO
+  item_material: POISONOUS_POTATO
   use_resource_pack: true
   resource_pack_url: https://raw.githubusercontent.com/Sowasvonbot/mc-coins/main/resource-packs/poisonous_potato_pack.zip
 
