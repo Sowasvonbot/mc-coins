@@ -73,14 +73,30 @@ public class Coin {
    * @return {@link ShapedRecipe} to register in the server
    */
   public static ShapedRecipe getRecipe() {
-    NamespacedKey recipeKey = requireNonNull(NamespacedKey.fromString("coin_easy"));
+    NamespacedKey recipeKey =
+        requireNonNull(NamespacedKey.fromString("coin_easy", RealCoinsPlugin.COINS_PLUGIN));
 
-    ShapedRecipe coinRecipe = new ShapedRecipe(recipeKey, Coin.createItemStack(3));
-    coinRecipe.shape("*E*", "ABA", "*A*");
-    coinRecipe.setIngredient('A', Material.GOLD_INGOT);
-    coinRecipe.setIngredient('B', Material.DIAMOND);
-    coinRecipe.setIngredient('E', Material.EMERALD);
+    ShapedRecipe coinRecipe = new ShapedRecipe(recipeKey, Coin.createItemStack(
+        ConfigHolder.getInstance()
+            .getValue(ConfigHolder.ConfigField.COIN_RECIPE_AMOUNT, Integer.class,
+                (amount) -> amount > 0 && amount <= 64)));
+    String recipeShape = ConfigHolder.getInstance()
+        .getValue(ConfigHolder.ConfigField.COIN_RECIPE_SHAPE, String.class);
 
+
+    coinRecipe.shape("abc", "def", "ghi");
+    char start = 'a';
+    for (String shapeLines : recipeShape.split("\n")) {
+      for (String materialString : shapeLines.split(",")) {
+        if (materialString.trim().equals("*")) {
+          start++;
+          continue;
+        }
+        Material material = Material.matchMaterial(materialString.trim());
+        coinRecipe.setIngredient(start, material);
+        start++;
+      }
+    }
     return coinRecipe;
   }
 

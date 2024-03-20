@@ -16,6 +16,15 @@ coin:
   head_value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVmZDY3ZDU2ZmZjNTNmYjM2MGExNzg3OWQ5YjUzMzhkNzMzMmQ4ZjEyOTQ5MWE1ZTE3ZThkNmU4YWVhNmMzYSJ9fX0=
   head_player_uuid: c7b55c30-93db-43b2-a108-47eae22a2a4a
 
+  # Items should match Material listed in https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+  # * is short for air. All 9 items must be present, e.g. the grid must be full.
+  recipe:
+    shape: |
+      *, EMERALD, *
+      GOLD_INGOT, DIAMOND, GOLD_INGOT,
+      *, GOLD_INGOT, *
+    amount: 3
+
 coin_sign:
   prefix: "[coins]"
 

@@ -96,7 +96,8 @@ public class ConfigHolder {
     ERROR_CREATE_TRADING_SIGN, ERROR_INVALID_TRADE_CHEST, ERROR_NOT_COIN_DURING_PAY,
     COIN_MESSAGE_FAKE, COIN_MESSAGE_REAL, ERROR_CREATE_COIN_CHEST, COMMAND_MESSAGE_COIN,
     COIN_USE_HEAD, COIN_ITEM_MATERIAL, COIN_HEAD_VALUE, COIN_HEAD_PLAYER_UUID,
-    COIN_RESOURCE_PACK_URL, COIN_USE_RESOURCE_PACK;
+    COIN_RESOURCE_PACK_URL, COIN_USE_RESOURCE_PACK, COIN_RECIPE_SHAPE,
+    COIN_RECIPE_AMOUNT;
 
     /**
      * Returns the <b>absolute</b> path for this {@link ConfigField} in the config.yml. May be used
@@ -115,6 +116,8 @@ public class ConfigHolder {
         case COIN_HEAD_PLAYER_UUID -> "coin.head_player_uuid";
         case COIN_USE_RESOURCE_PACK -> "coin.use_resource_pack";
         case COIN_RESOURCE_PACK_URL -> "coin.resource_pack_url";
+        case COIN_RECIPE_SHAPE -> "coin.recipe.shape";
+        case COIN_RECIPE_AMOUNT -> "coin.recipe.amount";
 
         case COMMAND_MESSAGE_COIN -> "command_message.coins";
 
