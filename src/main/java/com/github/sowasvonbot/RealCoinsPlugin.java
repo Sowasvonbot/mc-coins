@@ -50,5 +50,6 @@ public class RealCoinsPlugin extends JavaPlugin {
   public void onDisable() {
     getPluginLogger().info("Coin stopped");
     getServer().removeRecipe(Coin.getRecipe().getKey());
+    getServer().removeRecipe(Coin.getCraftBackRecipe().getKey());
   }
 }

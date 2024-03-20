@@ -31,7 +31,7 @@ public class CoinCommands implements CommandExecutor {
     switch (command.getName()) {
       case "coins" -> commandSender.sendMessage(String.format(ConfigHolder.getInstance()
           .getValue(ConfigHolder.ConfigField.COMMAND_MESSAGE_COIN, String.class,
-              (message) -> message.contains("%sd")), CoinBuffer.getInstance().getCoins(player)));
+              (message) -> message.contains("%d")), CoinBuffer.getInstance().getCoins(player)));
       default -> throw new CommandException(String.format("Command %s not found", label));
     }
     return true;

@@ -29,6 +29,12 @@ public class Coin {
 
   private static Material coinItemMaterial;
 
+  private static final NamespacedKey craftRecipeKey =
+      requireNonNull(NamespacedKey.fromString("coin_easy", RealCoinsPlugin.COINS_PLUGIN));
+
+  private static final NamespacedKey craftBackRecipeKey =
+      requireNonNull(NamespacedKey.fromString("coin_back"));
+
   /**
    * Creates an item stack of coins.
    *
@@ -73,10 +79,7 @@ public class Coin {
    * @return {@link ShapedRecipe} to register in the server
    */
   public static ShapedRecipe getRecipe() {
-    NamespacedKey recipeKey =
-        requireNonNull(NamespacedKey.fromString("coin_easy", RealCoinsPlugin.COINS_PLUGIN));
-
-    ShapedRecipe coinRecipe = new ShapedRecipe(recipeKey, Coin.createItemStack(
+    ShapedRecipe coinRecipe = new ShapedRecipe(craftRecipeKey, Coin.createItemStack(
         ConfigHolder.getInstance()
             .getValue(ConfigHolder.ConfigField.COIN_RECIPE_AMOUNT, Integer.class,
                 (amount) -> amount > 0 && amount <= 64)));
@@ -105,13 +108,12 @@ public class Coin {
    *
    * @return {@link Recipe} to register in the server
    */
-  public static Recipe getCraftBackRecipe() {
-    NamespacedKey recipeKey = requireNonNull(NamespacedKey.fromString("coin_back"));
-
+  public static FurnaceRecipe getCraftBackRecipe() {
     RecipeChoice recipeChoice = new CoinRecipeChoice();
 
-    return new FurnaceRecipe(recipeKey, new ItemStack(Material.GOLD_INGOT, 3), recipeChoice,
-        ConfigHolder.getInstance().getValue(ConfigHolder.ConfigField.COIN_SMELT_EXP, Integer.class,
+    return new FurnaceRecipe(craftBackRecipeKey, new ItemStack(Material.GOLD_INGOT, 3),
+        recipeChoice, ConfigHolder.getInstance()
+        .getValue(ConfigHolder.ConfigField.COIN_SMELT_EXP, Integer.class,
             (smeltExp) -> smeltExp >= 0), ConfigHolder.getInstance()
         .getValue(ConfigHolder.ConfigField.COIN_SMELT_TIME, Integer.class,
             (smeltTime) -> smeltTime >= 0));
