@@ -1,6 +1,6 @@
 package com.github.sowasvonbot.coin.storage;
 
-import com.github.sowasvonbot.CoinsPlugin;
+import com.github.sowasvonbot.RealCoinsPlugin;
 import java.util.Objects;
 import org.bukkit.NamespacedKey;
 
@@ -10,5 +10,5 @@ import org.bukkit.NamespacedKey;
 public abstract class Constants {
 
   protected static final NamespacedKey PLAYER_STORAGE_KEY = Objects.requireNonNull(
-      NamespacedKey.fromString("coin_storage_chests", CoinsPlugin.COINS_PLUGIN));
+      NamespacedKey.fromString("coin_storage_chests", RealCoinsPlugin.COINS_PLUGIN));
 }

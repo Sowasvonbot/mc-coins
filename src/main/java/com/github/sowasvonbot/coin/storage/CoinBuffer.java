@@ -2,7 +2,7 @@ package com.github.sowasvonbot.coin.storage;
 
 import static java.util.Objects.requireNonNull;
 
-import com.github.sowasvonbot.CoinsPlugin;
+import com.github.sowasvonbot.RealCoinsPlugin;
 import com.github.sowasvonbot.coin.Coin;
 import com.github.sowasvonbot.util.BlockUtility;
 import com.github.sowasvonbot.util.ItemConverter;
@@ -36,7 +36,6 @@ public class CoinBuffer {
   private static CoinBuffer instance;
 
   private final Objective coinData;
-
 
   private CoinBuffer() {
     ScoreboardManager scoreboardManager = requireNonNull(Bukkit.getScoreboardManager());
@@ -122,13 +121,12 @@ public class CoinBuffer {
         }
 
       } catch (Exception e) {
-        CoinsPlugin.getPluginLogger().warning("Error deserializing Location object");
+        RealCoinsPlugin.getPluginLogger().warning("Error deserializing Location object");
       }
     }
 
-    player.getPersistentDataContainer()
-        .set(Constants.PLAYER_STORAGE_KEY, PersistentDataType.STRING,
-            String.join(";", verifiedChests));
+    player.getPersistentDataContainer().set(Constants.PLAYER_STORAGE_KEY, PersistentDataType.STRING,
+        String.join(";", verifiedChests));
 
     for (BlockInventoryHolder holder : inventoryHolders) {
       amount = fillInventoryWithCoins(holder.getInventory(), amount);
@@ -169,5 +167,4 @@ public class CoinBuffer {
     coinData.getScore(player.getPlayer().getUniqueId().toString()).setScore(0);
     sendCoins(player, amount);
   }
-
 }

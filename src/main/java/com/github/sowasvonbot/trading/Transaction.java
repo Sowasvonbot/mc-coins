@@ -11,7 +11,6 @@ import java.util.List;
  */
 public record Transaction(int price, int amount) {
 
-
   /**
    * Returns a list of possible transactions.
    *

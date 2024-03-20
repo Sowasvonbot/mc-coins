@@ -2,8 +2,15 @@ package com.github.sowasvonbot.coin;
 
 import static java.util.Objects.requireNonNull;
 
+import com.github.sowasvonbot.RealCoinsPlugin;
 import com.github.sowasvonbot.util.ConfigHolder;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import java.lang.reflect.Field;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.logging.Level;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.FurnaceRecipe;
@@ -12,6 +19,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
@@ -19,6 +27,7 @@ import org.bukkit.persistence.PersistentDataType;
  */
 public class Coin {
 
+  private static Material coinItemMaterial;
 
   /**
    * Creates an item stack of coins.
@@ -27,15 +36,15 @@ public class Coin {
    * @return {@link ItemStack} with special coins
    */
   public static ItemStack createItemStack(int amount) {
-    ItemStack coin = new ItemStack(Material.POISONOUS_POTATO, amount);
+    ItemStack coin = createCoinItemStack(amount);
     ItemMeta itemMeta = coin.getItemMeta();
     if (itemMeta == null) {
       throw new IllegalStateException("Can not create coin due to missing item meta");
     }
     itemMeta.getPersistentDataContainer()
         .set(Constants.COIN_KEY, PersistentDataType.STRING, Constants.COIN_KEY_VALUE);
-    itemMeta.setDisplayName(
-        ConfigHolder.getInstance().getString(ConfigHolder.ConfigField.COIN_DISPLAY_NAME));
+    itemMeta.setDisplayName(ConfigHolder.getInstance()
+        .getValue(ConfigHolder.ConfigField.COIN_DISPLAY_NAME, String.class));
     coin.setItemMeta(itemMeta);
     return coin;
   }
@@ -86,13 +95,50 @@ public class Coin {
     RecipeChoice recipeChoice = new CoinRecipeChoice();
 
     return new FurnaceRecipe(recipeKey, new ItemStack(Material.GOLD_INGOT, 3), recipeChoice,
-        ConfigHolder.getInstance()
-            .getNumber(ConfigHolder.ConfigField.COIN_SMELT_EXP, (smeltExp) -> smeltExp >= 0),
-        ConfigHolder.getInstance().getNumber(ConfigHolder.ConfigField.COIN_SMELT_TIME,
+        ConfigHolder.getInstance().getValue(ConfigHolder.ConfigField.COIN_SMELT_EXP, Integer.class,
+            (smeltExp) -> smeltExp >= 0), ConfigHolder.getInstance()
+        .getValue(ConfigHolder.ConfigField.COIN_SMELT_TIME, Integer.class,
             (smeltTime) -> smeltTime >= 0));
-
   }
 
+  private static Material getCoinItemMaterial() {
+    if (coinItemMaterial == null) {
+      if (ConfigHolder.getInstance()
+          .getValue(ConfigHolder.ConfigField.COIN_USE_HEAD, Boolean.class)) {
+        coinItemMaterial = Material.PLAYER_HEAD;
+      } else {
+        String materialString = ConfigHolder.getInstance()
+            .getValue(ConfigHolder.ConfigField.COIN_ITEM_MATERIAL, String.class,
+                (material) -> Material.matchMaterial(material.toUpperCase(Locale.ROOT)) != null);
+        coinItemMaterial = Material.matchMaterial(materialString);
+      }
+    }
+    return coinItemMaterial;
+  }
 
+  private static ItemStack createCoinItemStack(int amount) {
+    Material material = getCoinItemMaterial();
+    if (material != Material.PLAYER_HEAD) {
+      return new ItemStack(material, amount);
+    }
+    ItemStack headItemstack = new ItemStack(Material.PLAYER_HEAD, amount);
+    SkullMeta skullMeta = (SkullMeta) headItemstack.getItemMeta();
 
+    GameProfile gameProfile = new GameProfile(UUID.fromString(ConfigHolder.getInstance()
+        .getValue(ConfigHolder.ConfigField.COIN_HEAD_PLAYER_UUID, String.class)), null);
+    gameProfile.getProperties().put("textures", new Property("textures", ConfigHolder.getInstance()
+        .getValue(ConfigHolder.ConfigField.COIN_HEAD_VALUE, String.class)));
+
+    try {
+      Field profileField = skullMeta.getClass().getDeclaredField("profile");
+      profileField.setAccessible(true);
+      profileField.set(skullMeta, gameProfile);
+    } catch (NoSuchFieldException
+             | IllegalAccessException e) {
+      RealCoinsPlugin.getPluginLogger().log(Level.SEVERE, e,
+          () -> "Could not load head file, using default head as coin. "
+              + "If this problem is not fixable, please set use_head = false");
+    }
+    return headItemstack;
+  }
 }

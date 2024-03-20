@@ -23,9 +23,8 @@ public class CoinSignListener implements Listener {
   @EventHandler
   public void createsCoinSignIfPossible(SignChangeEvent event) {
     Optional<Sign> potentialSign = BlockUtility.checkIfBlockIsSignWithPrefix(event.getBlock(),
-        ConfigHolder.getInstance().getString(ConfigHolder.ConfigField.SIGN_PREFIX,
-            ConfigHolder.getMaxCharsPredicate(BlockUtility.SIGN_LINE_LENGTH)),
-        event.getLines());
+        ConfigHolder.getInstance().getValue(ConfigHolder.ConfigField.SIGN_PREFIX, String.class,
+            ConfigHolder.getMaxCharsPredicate(BlockUtility.SIGN_LINE_LENGTH)), event.getLines());
     if (potentialSign.isEmpty()) {
       return;
     }

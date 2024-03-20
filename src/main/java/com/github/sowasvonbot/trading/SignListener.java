@@ -41,7 +41,7 @@ public class SignListener implements Listener {
     }
     String firstLine = sign.getLine(0);
     if (!firstLine.equals(ConfigHolder.getInstance()
-        .getString(ConfigHolder.ConfigField.STORAGE_CHEST_PREFIX,
+        .getValue(ConfigHolder.ConfigField.STORAGE_CHEST_PREFIX, String.class,
             ConfigHolder.getMaxCharsPredicate(BlockUtility.SIGN_LINE_LENGTH)))
         && !TradeSign.isTradingSign(event.getClickedBlock())) {
       return;
@@ -51,7 +51,7 @@ public class SignListener implements Listener {
       if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
         if (!TradeSign.makeSignTradeSign(sign, event.getPlayer(), event.getItem())) {
           event.getPlayer().sendMessage(ConfigHolder.getInstance()
-              .getString(ConfigHolder.ConfigField.ERROR_CREATE_TRADING_SIGN));
+              .getValue(ConfigHolder.ConfigField.ERROR_CREATE_TRADING_SIGN, String.class));
           sign.getBlock().breakNaturally();
           // Experimental block duplication fix
           event.setCancelled(true);
@@ -69,8 +69,8 @@ public class SignListener implements Listener {
       return;
     }
 
-    if (!event.getItem().isSimilar(TradeSign.getTradingBlockItem(sign.getBlock()))
-        && !Coin.isCoin(event.getItem())) {
+    if (!event.getItem().isSimilar(TradeSign.getTradingBlockItem(sign.getBlock())) && !Coin.isCoin(
+        event.getItem())) {
       return;
     }
     // decrease with left click, increase with right click
@@ -81,7 +81,6 @@ public class SignListener implements Listener {
     };
     TradeSign.changePrice(sign, event.getItem(), event.getItem().getAmount() * multiplier);
     event.setCancelled(true);
-
   }
 
   /**
@@ -92,8 +91,9 @@ public class SignListener implements Listener {
   @EventHandler
   public void preventCreatingTradingSignIfSignAlreadyPresent(SignChangeEvent event) {
     Optional<Sign> potentialSign = BlockUtility.checkIfBlockIsSignWithPrefix(event.getBlock(),
-        ConfigHolder.getInstance().getString(ConfigHolder.ConfigField.STORAGE_CHEST_PREFIX,
-            ConfigHolder.getMaxCharsPredicate(BlockUtility.SIGN_LINE_LENGTH)),
+        ConfigHolder.getInstance()
+            .getValue(ConfigHolder.ConfigField.STORAGE_CHEST_PREFIX, String.class,
+                ConfigHolder.getMaxCharsPredicate(BlockUtility.SIGN_LINE_LENGTH)),
         event.getLines());
     if (potentialSign.isEmpty()) {
       return;
@@ -106,5 +106,4 @@ public class SignListener implements Listener {
       event.setCancelled(true);
     }
   }
-
 }

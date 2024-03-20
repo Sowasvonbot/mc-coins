@@ -1,6 +1,5 @@
 package com.github.sowasvonbot.util;
 
-import com.github.sowasvonbot.trading.TradeSign;
 import java.util.Optional;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -15,8 +14,8 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
 /**
- * Prevents destroying of blocks.
- * The result of the keepBlock() function determines if a block will be destroyed or not.
+ * Prevents destroying of blocks. The result of the keepBlock() function determines if a block will
+ * be destroyed or not.
  */
 public abstract class BreakListener implements Listener {
 
@@ -59,7 +58,6 @@ public abstract class BreakListener implements Listener {
   public void preventBlockMoved(BlockPistonExtendEvent event) {
     event.setCancelled(event.getBlocks().stream().anyMatch(this::keepBlock));
   }
-
 
   private boolean keepBlock(Block block) {
     return keepBlock(block, Optional.empty());

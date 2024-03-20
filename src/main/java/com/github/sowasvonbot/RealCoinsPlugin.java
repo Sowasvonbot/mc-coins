@@ -8,7 +8,7 @@ import com.github.sowasvonbot.coin.storage.PlayerJoinListener;
 import com.github.sowasvonbot.trading.ChestListener;
 import com.github.sowasvonbot.trading.SignListener;
 import com.github.sowasvonbot.trading.TradeBlockBreakListener;
-import com.github.sowasvonbot.updater.PlayerListener;
+import com.github.sowasvonbot.util.ResourcePackResolver;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.logging.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,15 +16,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * Main plugin class.
  */
-public class CoinsPlugin extends JavaPlugin {
+public class RealCoinsPlugin extends JavaPlugin {
 
-  @SuppressFBWarnings("MS_CANNOT_BE_FINAL") public static CoinsPlugin COINS_PLUGIN;
-
+  @SuppressFBWarnings("MS_CANNOT_BE_FINAL") public static RealCoinsPlugin COINS_PLUGIN;
 
   public static Logger getPluginLogger() {
     return COINS_PLUGIN.getLogger();
   }
-
 
   @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   @Override
@@ -43,8 +41,7 @@ public class CoinsPlugin extends JavaPlugin {
     getServer().getPluginManager().registerEvents(new SignListener(), this);
     getServer().getPluginManager().registerEvents(new TradeBlockBreakListener(), this);
 
-    getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-
+    getServer().getPluginManager().registerEvents(new ResourcePackResolver(), this);
 
     CoinCommands.register();
   }

@@ -30,7 +30,6 @@ public class TradeBlockBreakListener extends BreakListener {
           .orElse(true);
     }
     return false;
-
   }
 
   @Override

@@ -3,6 +3,18 @@ coin:
   display_name: Coin
   smelt_exp: 0
   smelt_time: 200
+  use_head: false # If true, heads are used instead of standard items
+
+  # Only needed if use_head is false
+  coin_item_material: POISONOUS_POTATO
+  use_resource_pack: true
+  resource_pack_url: https://raw.githubusercontent.com/Sowasvonbot/mc-coins/main/resource-packs/poisonous_potato_pack.zip
+
+  # Links to https://minecraft-heads.com/custom-heads/head/63067-bag-of-coins
+  # The Player UUID is called Minecraft URL on minecraft-heads
+  # Only needed if use_head is true
+  head_value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVmZDY3ZDU2ZmZjNTNmYjM2MGExNzg3OWQ5YjUzMzhkNzMzMmQ4ZjEyOTQ5MWE1ZTE3ZThkNmU4YWVhNmMzYSJ9fX0=
+  head_player_uuid: 95fd67d56ffc53fb360a17879d9b5338d7332d8f129491a5e17e8d6e8aea6c3a
 
 coin_sign:
   prefix: "[coins]"

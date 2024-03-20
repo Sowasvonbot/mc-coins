@@ -50,8 +50,7 @@ public class ChestListener implements Listener {
       event.setCancelled(true);
       return;
     }
-    boolean topChestClicked =
-        event.getClickedInventory().equals(event.getView().getTopInventory());
+    boolean topChestClicked = event.getClickedInventory().equals(event.getView().getTopInventory());
     ItemStack tradingItem = TradeSign.getTradingBlockItem(block);
 
     if (!(topChestClicked || event.isShiftClick())) {
@@ -61,10 +60,9 @@ public class ChestListener implements Listener {
     if (tradingItem == null) {
       event.setCancelled(true);
       event.getWhoClicked().sendMessage(ConfigHolder.getInstance()
-          .getString(ConfigHolder.ConfigField.ERROR_INVALID_TRADE_CHEST));
+          .getValue(ConfigHolder.ConfigField.ERROR_INVALID_TRADE_CHEST, String.class));
       return;
     }
-
 
     if (PlayerUtility.equal(player, TradeSign.getOwnerOffTradingBlock(block))) {
       handleOwnerBlockUpdate(event.getView().getTopInventory(), block);
@@ -77,11 +75,8 @@ public class ChestListener implements Listener {
         primaryItem = event.getCursor();
       }
       event.setCancelled(
-          !handlePlayerBlockUpdate(block, player, event.getView().getTopInventory(),
-              primaryItem));
+          !handlePlayerBlockUpdate(block, player, event.getView().getTopInventory(), primaryItem));
     }
-
-
   }
 
   /**
@@ -117,22 +112,20 @@ public class ChestListener implements Listener {
     if (PlayerUtility.equal(player, TradeSign.getOwnerOffTradingBlock(block))) {
       handleOwnerBlockUpdate(event.getView().getTopInventory(), block);
     } else {
-      event.setCancelled(
-          !handlePlayerBlockUpdate(block, player, event.getView().getTopInventory(),
-              event.getCursor()));
+      event.setCancelled(!handlePlayerBlockUpdate(block, player, event.getView().getTopInventory(),
+          event.getCursor()));
     }
   }
 
   /**
    * Prevents item moves to trading blocks.
    *
-   * @param event {@link InventoryMoveItemEvent} called, when one block moves the item to
-   *              another block
+   * @param event {@link InventoryMoveItemEvent} called, when one block moves the item to another
+   *              block
    */
   @EventHandler
   public void preventAllInteractions(InventoryMoveItemEvent event) {
-    if (event.getSource().getLocation() == null
-        && event.getDestination().getLocation() == null) {
+    if (event.getSource().getLocation() == null && event.getDestination().getLocation() == null) {
       return;
     }
     if (event.getSource().getLocation() != null) {
@@ -160,7 +153,7 @@ public class ChestListener implements Listener {
       ItemStack itemStack) {
     if (!Coin.isCoin(itemStack)) {
       player.sendMessage(ConfigHolder.getInstance()
-          .getString(ConfigHolder.ConfigField.ERROR_NOT_COIN_DURING_PAY));
+          .getValue(ConfigHolder.ConfigField.ERROR_NOT_COIN_DURING_PAY, String.class));
       return false;
     }
     player.sendMessage(TradeSign.makeTrade(block, inventory));
@@ -182,5 +175,4 @@ public class ChestListener implements Listener {
         .filter(block -> event.getBlock().getType() == block.getType())
         .anyMatch(TradeSign::isTradingBlock));
   }
-
 }

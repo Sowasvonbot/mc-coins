@@ -24,6 +24,4 @@ public class CoinRecipeChoice extends RecipeChoice.MaterialChoice {
     return 37 * 3 + Objects.hashCode(this.getChoices().get(0)) + Objects.hash(
         Coin.createItemStack());
   }
-
-
 }

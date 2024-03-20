@@ -1,6 +1,6 @@
 package com.github.sowasvonbot.util;
 
-import com.github.sowasvonbot.CoinsPlugin;
+import com.github.sowasvonbot.RealCoinsPlugin;
 import java.util.Objects;
 import java.util.Optional;
 import org.bukkit.NamespacedKey;
@@ -35,7 +35,6 @@ public abstract class ItemUtility {
     return itemStack.getType().name().replace('_', ' ').toLowerCase();
   }
 
-
   /**
    * Marks the given ItemStack as unique.
    *
@@ -53,7 +52,7 @@ public abstract class ItemUtility {
       try {
         itemStack.addUnsafeEnchantment(FALLBACK_ENCHANTMENT, FALLBACK_ENCHANTMENT_LEVEL);
       } catch (Exception e) {
-        CoinsPlugin.getPluginLogger()
+        RealCoinsPlugin.getPluginLogger()
             .warning(String.format("Error creating a unique item: %s", e.getMessage()));
         return Optional.empty();
       }

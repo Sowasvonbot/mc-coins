@@ -2,7 +2,7 @@ package com.github.sowasvonbot.trading;
 
 import static java.util.Objects.requireNonNull;
 
-import com.github.sowasvonbot.CoinsPlugin;
+import com.github.sowasvonbot.RealCoinsPlugin;
 import com.github.sowasvonbot.coin.Coin;
 import com.github.sowasvonbot.coin.storage.CoinBuffer;
 import com.github.sowasvonbot.util.BlockUtility;
@@ -28,19 +28,17 @@ import org.bukkit.persistence.PersistentDataType;
  */
 public class TradeSign {
   private static final NamespacedKey KEY =
-      requireNonNull(NamespacedKey.fromString("trade_sign", CoinsPlugin.COINS_PLUGIN));
+      requireNonNull(NamespacedKey.fromString("trade_sign", RealCoinsPlugin.COINS_PLUGIN));
   private static final NamespacedKey AMOUNT =
-      requireNonNull(NamespacedKey.fromString("trade_sign_amount", CoinsPlugin.COINS_PLUGIN));
+      requireNonNull(NamespacedKey.fromString("trade_sign_amount", RealCoinsPlugin.COINS_PLUGIN));
   private static final NamespacedKey MATERIAL =
-      requireNonNull(NamespacedKey.fromString("trade_sign_material", CoinsPlugin.COINS_PLUGIN));
+      requireNonNull(NamespacedKey.fromString("trade_sign_material", RealCoinsPlugin.COINS_PLUGIN));
   private static final NamespacedKey OWNER =
-      requireNonNull(NamespacedKey.fromString("trade_sign_owner", CoinsPlugin.COINS_PLUGIN));
+      requireNonNull(NamespacedKey.fromString("trade_sign_owner", RealCoinsPlugin.COINS_PLUGIN));
   private static final NamespacedKey PRICE =
-      requireNonNull(NamespacedKey.fromString("trade_sign_price", CoinsPlugin.COINS_PLUGIN));
+      requireNonNull(NamespacedKey.fromString("trade_sign_price", RealCoinsPlugin.COINS_PLUGIN));
   private static final NamespacedKey PIECES =
-      requireNonNull(NamespacedKey.fromString("trade_sign_pieces", CoinsPlugin.COINS_PLUGIN));
-
-
+      requireNonNull(NamespacedKey.fromString("trade_sign_pieces", RealCoinsPlugin.COINS_PLUGIN));
 
   /**
    * Converts the given sign to a trading sign, e.g. saves the correct persistent data.
@@ -133,8 +131,8 @@ public class TradeSign {
     if (!(tradingSign.get().getState() instanceof Sign sign)) {
       return null;
     }
-    return Bukkit.getOfflinePlayer(UUID.fromString(
-        sign.getPersistentDataContainer().get(OWNER, PersistentDataType.STRING)));
+    return Bukkit.getOfflinePlayer(
+        UUID.fromString(sign.getPersistentDataContainer().get(OWNER, PersistentDataType.STRING)));
   }
 
   /**
@@ -157,18 +155,18 @@ public class TradeSign {
     int available = sign.getPersistentDataContainer().get(AMOUNT, PersistentDataType.INTEGER);
     int pieces = sign.getPersistentDataContainer().get(PIECES, PersistentDataType.INTEGER);
 
-    OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(UUID.fromString(
-        sign.getPersistentDataContainer().get(OWNER, PersistentDataType.STRING)));
+    OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(
+        UUID.fromString(sign.getPersistentDataContainer().get(OWNER, PersistentDataType.STRING)));
 
     ItemStack target = getSignItem(sign);
 
-    Bukkit.getScheduler().runTask(CoinsPlugin.COINS_PLUGIN, () -> {
+    Bukkit.getScheduler().runTask(RealCoinsPlugin.COINS_PLUGIN, () -> {
       int coinAmount = 0;
       for (ItemStack itemStack : inventory.getStorageContents()) {
         coinAmount += Coin.isCoin(itemStack) ? itemStack.getAmount() : 0;
       }
-      for (Transaction transaction : Transaction.getMaximumPossibleTransactions(available,
-          price, pieces, coinAmount)) {
+      for (Transaction transaction : Transaction.getMaximumPossibleTransactions(available, price,
+          pieces, coinAmount)) {
         removeCoinsFromInventory(inventory, transaction.price(), targetPlayer);
         addBuyedItemsToInventory(inventory, sign, transaction.amount(), target);
         sign.update();
@@ -211,8 +209,7 @@ public class TradeSign {
     int amount = sign.getPersistentDataContainer().get(AMOUNT, PersistentDataType.INTEGER);
     String pieceColor = amount < pieces || pieces == 0 ? "§4" : "§2";
     String priceColor = price == 0 ? "§4" : "§2";
-    sign.setLine(2,
-        String.format("%s§l%d§0 = %s§l%d§0 ¢", pieceColor, pieces, priceColor, price));
+    sign.setLine(2, String.format("%s§l%d§0 = %s§l%d§0 ¢", pieceColor, pieces, priceColor, price));
     sign.setLine(3, String.format("stock: %d", amount));
     sign.update();
   }
@@ -221,7 +218,7 @@ public class TradeSign {
    * Restocks the given trading block by deleting items from its inventory.
    *
    * @param block     the trading block to restock
-   * @param inventory the {@link  Inventory} of the block
+   * @param inventory the {@link Inventory} of the block
    */
   public static void restock(Block block, Inventory inventory) {
     Optional<Block> possibleTradingSign = getTradingSign(block);
@@ -231,7 +228,7 @@ public class TradeSign {
     if (!(possibleTradingSign.get().getState() instanceof Sign sign)) {
       return;
     }
-    Bukkit.getScheduler().runTask(CoinsPlugin.COINS_PLUGIN, () -> {
+    Bukkit.getScheduler().runTask(RealCoinsPlugin.COINS_PLUGIN, () -> {
       if (!actualRestock(sign, inventory)) {
         makeTrade(block, inventory);
       }
@@ -270,8 +267,7 @@ public class TradeSign {
     while (amount > 0) {
       int spawnAmount = Math.min(item.getMaxStackSize(), amount);
       item.setAmount(spawnAmount);
-      block.getWorld()
-          .dropItemNaturally(BlockUtility.getNextAirBlock(block).getLocation(), item);
+      block.getWorld().dropItemNaturally(BlockUtility.getNextAirBlock(block).getLocation(), item);
       amount -= spawnAmount;
     }
     Optional<Inventory> inventory = getInventoryRelatedToSign(sign);
@@ -279,7 +275,6 @@ public class TradeSign {
       return;
     }
     inventory.get().setItem(0, null);
-
   }
 
   protected static void changePrice(Sign sign, ItemStack itemStack, int amount) {
@@ -301,7 +296,6 @@ public class TradeSign {
       return null;
     }
     return getSignItem((Sign) tempBlock.get().getState());
-
   }
 
   private static @Nullable ItemStack getSignItem(Sign sign) {
@@ -309,19 +303,14 @@ public class TradeSign {
         sign.getPersistentDataContainer().get(MATERIAL, PersistentDataType.STRING));
   }
 
-  private static void addToIntegerNamespace(Sign sign, NamespacedKey namespacedKey,
-      int amount) {
+  private static void addToIntegerNamespace(Sign sign, NamespacedKey namespacedKey, int amount) {
     int tempNewValue =
-        sign.getPersistentDataContainer().get(namespacedKey, PersistentDataType.INTEGER)
-            + amount;
+        sign.getPersistentDataContainer().get(namespacedKey, PersistentDataType.INTEGER) + amount;
     // Min number stored is zero
     tempNewValue = Math.max(0, tempNewValue);
-    sign.getPersistentDataContainer()
-        .set(namespacedKey, PersistentDataType.INTEGER, tempNewValue);
+    sign.getPersistentDataContainer().set(namespacedKey, PersistentDataType.INTEGER, tempNewValue);
     sign.update();
   }
-
-
 
   private static Optional<Inventory> getInventoryRelatedToSign(Sign sign) {
     Optional<Block> supporter = BlockUtility.getBlockSupportingSign(sign);

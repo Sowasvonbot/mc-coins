@@ -1,6 +1,6 @@
 package com.github.sowasvonbot.coin.storage;
 
-import com.github.sowasvonbot.CoinsPlugin;
+import com.github.sowasvonbot.RealCoinsPlugin;
 import com.github.sowasvonbot.util.ConfigHolder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandException;
@@ -18,7 +18,7 @@ public class CoinCommands implements CommandExecutor {
 
   public static void register() {
     CoinCommands coinCommands = new CoinCommands();
-    CoinsPlugin.COINS_PLUGIN.getCommand("coins").setExecutor(coinCommands);
+    RealCoinsPlugin.COINS_PLUGIN.getCommand("coins").setExecutor(coinCommands);
   }
 
   @Override
@@ -30,9 +30,8 @@ public class CoinCommands implements CommandExecutor {
 
     switch (command.getName()) {
       case "coins" -> commandSender.sendMessage(String.format(ConfigHolder.getInstance()
-              .getString(ConfigHolder.ConfigField.COMMAND_MESSAGE_COIN,
-                  (message) -> message.contains("%sd")),
-          CoinBuffer.getInstance().getCoins(player)));
+          .getValue(ConfigHolder.ConfigField.COMMAND_MESSAGE_COIN, String.class,
+              (message) -> message.contains("%sd")), CoinBuffer.getInstance().getCoins(player)));
       default -> throw new CommandException(String.format("Command %s not found", label));
     }
     return true;

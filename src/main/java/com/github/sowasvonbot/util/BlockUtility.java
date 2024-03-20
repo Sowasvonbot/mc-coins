@@ -95,7 +95,6 @@ public class BlockUtility {
     return Optional.empty();
   }
 
-
   /**
    * Checks the given block if it is a sign and contains the given prefix.
    *
@@ -109,8 +108,8 @@ public class BlockUtility {
     if (!(block.getState() instanceof Sign sign)) {
       return Optional.empty();
     }
-    return Arrays.stream(newLines).anyMatch(line -> line.contains(prefix)) ? Optional.of(sign) :
-        Optional.empty();
+    return Arrays.stream(newLines).anyMatch(line -> line.contains(prefix)) ? Optional.of(sign)
+        : Optional.empty();
   }
 
   /**
@@ -119,7 +118,6 @@ public class BlockUtility {
    * @param block {@link Block} to check
    * @return true, if the given {@link Block} is a valid trading block
    */
-
   public static boolean isPossibleInventoryBlock(Block block) {
     if (!(block.getState() instanceof BlockInventoryHolder)) {
       return false;

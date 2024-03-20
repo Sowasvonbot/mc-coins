@@ -1,6 +1,6 @@
 package com.github.sowasvonbot.coin;
 
-import com.github.sowasvonbot.CoinsPlugin;
+import com.github.sowasvonbot.RealCoinsPlugin;
 import org.bukkit.NamespacedKey;
 
 /**
@@ -8,6 +8,6 @@ import org.bukkit.NamespacedKey;
  */
 public abstract class Constants {
   protected static final NamespacedKey COIN_KEY =
-      new NamespacedKey(CoinsPlugin.COINS_PLUGIN, "coin");
+      new NamespacedKey(RealCoinsPlugin.COINS_PLUGIN, "coin");
   protected static final String COIN_KEY_VALUE = "Coin";
 }

@@ -9,8 +9,7 @@ import org.bukkit.OfflinePlayer;
 public class PlayerUtility {
 
   /**
-   * Custom equality check for two players.
-   * Accepts null.
+   * Custom equality check for two players. Accepts null.
    *
    * @param player1 some {@link OfflinePlayer}
    * @param player2 some {@link OfflinePlayer}
@@ -27,7 +26,5 @@ public class PlayerUtility {
       return true;
     }
     return player1.getUniqueId().equals(player2.getUniqueId());
-
-
   }
 }

@@ -1,6 +1,6 @@
 package com.github.sowasvonbot.util;
 
-import com.github.sowasvonbot.CoinsPlugin;
+import com.github.sowasvonbot.RealCoinsPlugin;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -16,8 +16,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
- * Utility class to convert {@link ItemStack ItemStacks} to
- * Strings and these Strings back to {@link ItemStack ItemStacks}.
+ * Utility class to convert {@link ItemStack ItemStacks} to Strings and these Strings back to
+ * {@link ItemStack ItemStacks}.
  */
 public class ItemConverter {
 
@@ -30,9 +30,8 @@ public class ItemConverter {
   }
 
   /**
-   * Returns a {@link String} representation of the given object. The {@link Optional} is empty,
-   * if some error occurred.
-   * The representation might be deserialized with
+   * Returns a {@link String} representation of the given object. The {@link Optional} is empty, if
+   * some error occurred. The representation might be deserialized with
    * {@link ItemConverter#base64StringToObject(String)}.
    *
    * @param object an arbitrary {@link Object}
@@ -46,15 +45,14 @@ public class ItemConverter {
       oos.flush();
       return Optional.of(Base64.getEncoder().encodeToString(bos.toByteArray()));
     } catch (Exception e) {
-      CoinsPlugin.getPluginLogger().warning(e.getMessage());
+      RealCoinsPlugin.getPluginLogger().warning(e.getMessage());
     }
     return Optional.empty();
   }
 
   /**
-   * Returns a {@link Object} deserialized from the given {@link String}.
-   * The {@link Optional} is empty, if some error occurred.
-   * Only {@link String}s obtained with
+   * Returns a {@link Object} deserialized from the given {@link String}. The {@link Optional} is
+   * empty, if some error occurred. Only {@link String}s obtained with
    * {@link ItemConverter#base64StringToObject(String)} can be deserialized with this method.
    *
    * @param base64String an arbitrary {@link Object} serialized to a base644 {@link String} with
@@ -67,7 +65,7 @@ public class ItemConverter {
       ObjectInputStream ois = new ObjectInputStream(bis);
       return Optional.of(ois.readObject());
     } catch (Exception e) {
-      CoinsPlugin.getPluginLogger().warning(e.getMessage());
+      RealCoinsPlugin.getPluginLogger().warning(e.getMessage());
     }
     return Optional.empty();
   }
@@ -141,10 +139,9 @@ public class ItemConverter {
         return ItemStack.deserialize(map);
       }
     } catch (Exception e) {
-      CoinsPlugin.getPluginLogger().warning(e.getMessage());
+      RealCoinsPlugin.getPluginLogger().warning(e.getMessage());
       return null;
     }
-
   }
 
   @SuppressWarnings("unchecked")
