@@ -1,0 +1,12 @@
+name: Coins
+version: 0.0.8
+api-version: 1.19
+author: Sowasvonbot
+description: "Add real coins to the world of Minecraft"
+website: "https://gitlab.com/Sowasvonbot/mc-coins"
+main: com.github.sowasvonbot.CoinPlugin
+
+commands:
+  coins:
+    description: shows your buffered coins
+    usage: /<command>

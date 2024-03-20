@@ -1,0 +1,27 @@
+### Coin Section
+coin:
+  display_name: Coin
+  smelt_exp: 0
+  smelt_time: 200
+
+coin_sign:
+  prefix: "[coins]"
+
+storage_chest:
+  prefix: "[trading]"
+
+coin_messages:
+  fake_coin: This coin might be fake!
+  real_coin: This is gold, believe it
+
+command_message:
+  # %d will be replaced with the coin amount.
+  coins: You have %d coins buffered at the moment
+
+error_messages:
+  create_coin_chest: Error creating the coin chest
+  create_trading_sign: |
+    Error creating the trading sign.
+    Maybe the first slot was not empty!
+  invalid_trade_chest: Trade chest invalid, please replace the sign
+  not_coin_during_pay: You have to use coins to pay and click an empty slot!
