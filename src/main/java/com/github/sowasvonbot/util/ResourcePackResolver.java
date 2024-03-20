@@ -20,7 +20,7 @@ public class ResourcePackResolver implements Listener {
    */
   @EventHandler
   public void suggestResourcePack(PlayerJoinEvent playerJoinEvent) {
-    if (ConfigHolder.getInstance()
+    if (!ConfigHolder.getInstance()
         .getValue(ConfigHolder.ConfigField.COIN_USE_RESOURCE_PACK, Boolean.class)) {
       return;
     }
