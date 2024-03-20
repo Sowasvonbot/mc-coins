@@ -1,5 +1,6 @@
 package com.github.sowasvonbot.coin;
 
+import com.github.sowasvonbot.trading.TradeSign;
 import com.github.sowasvonbot.util.ConfigHolder;
 import java.util.Objects;
 import org.bukkit.Material;
@@ -86,10 +87,13 @@ public class CoinListener implements Listener {
     if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;
     }
-    if (!event.hasItem()) {
+    if (!event.hasItem() || !event.hasBlock()) {
       return;
     }
     if (Objects.requireNonNull(event.getItem()).getType() != Material.PLAYER_HEAD) {
+      return;
+    }
+    if (TradeSign.isTradingSign(event.getClickedBlock())) {
       return;
     }
     event.setCancelled(Coin.isCoin(event.getItem()));

@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerSignOpenEvent;
 import org.bukkit.inventory.BlockInventoryHolder;
 
 /**
@@ -59,7 +60,6 @@ public class SignListener implements Listener {
       }
       return;
     }
-
     if (!PlayerUtility.equal(event.getPlayer(),
         TradeSign.getOwnerOffTradingBlock(event.getClickedBlock()))) {
       return;
@@ -81,6 +81,16 @@ public class SignListener implements Listener {
     };
     TradeSign.changePrice(sign, event.getItem(), event.getItem().getAmount() * multiplier);
     event.setCancelled(true);
+  }
+
+  /**
+   * Prevent a trading sign to be edited.
+   *
+   * @param event {@link PlayerSignOpenEvent} to cancel, if the targeted sign is a trading sign
+   */
+  @EventHandler
+  public void preventTradeSignFromBeingOpened(PlayerSignOpenEvent event) {
+    event.setCancelled(TradeSign.isTradingSign(event.getSign().getBlock()));
   }
 
   /**
